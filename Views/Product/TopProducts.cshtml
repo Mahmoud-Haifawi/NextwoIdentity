@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Product>
+@{
+    ViewData["Title"] = "Top Product";
+}
+
+<h1>Top Product</h1>
+@if (User.IsInRole("Admin"))
+{
+    <td>
+        <a asp-action="CreateProduct" asp-controller="Product" class="btn btn-primary">Create New Product </a>
+
+    </td>
+}
+
+
+<table class="table table-bordered">
+    <tr>
+        <th>@Html.DisplayNameFor(x=>x.ProductName)</th>
+        <th>@Html.DisplayNameFor(x=>x.Price)</th>
+        <th>@Html.DisplayNameFor(x=>x.Category!.CategoryName)</th>
+
+        <th>Operations</th>
+    </tr>
+    @foreach (var pro in Model.OrderByDescending(p => p.ProductId).Take(10).ToList())
+    {
+        <tr>
+            <td>@pro.ProductName</td>
+            <td>@pro.Price</td>
+            <td>@pro.Category!.CategoryName</td>
+
+            <td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-route-id="@pro.ProductId" asp-action="DeleteProduct" asp-controller="Product" class="btn btn-outline-danger">Delete</a>
+                    <a asp-route-id="@pro.ProductId" asp-action="EditProduct" asp-controller="Product" class="btn btn-outline-secondary">Edit </a>
+
+                }
+                <a asp-route-id="@pro.ProductId" asp-action="Details" asp-controller="Product" class="btn btn-outline-info btn-close-white ">Details</a>
+
+            </td>
+        </tr>
+    }
+</table>

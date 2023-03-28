@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Category>
+
+@{
+    ViewData["Title"] = "ALLCategory";
+}
+
+<h1>ALLCategory</h1>
+
+
+@if (User.IsInRole("Admin"))
+{
+    <td>
+        <a asp-action="CreateCategory" asp-controller="Product" class="btn btn-primary">Create New Category </a>
+
+    </td>
+}
+
+
+<table class="table table-bordered">
+    <tr>
+        <th>@Html.DisplayNameFor(x=>x.CategoryId)</th>
+        <th>@Html.DisplayNameFor(x=>x.CategoryName)</th>
+
+        <th>Operations</th>
+    </tr>
+    @foreach (var pro in Model)
+    {
+        <tr>
+            <td>@pro.CategoryId</td>
+            <td>@pro.CategoryName</td>
+
+            <td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-route-id="@pro.CategoryId" asp-action="DeleteCategory" asp-controller="Product" class="btn btn-outline-danger">Delete</a>
+                    <a asp-route-id="@pro.CategoryId" asp-action="EditCategory" asp-controller="Product" class="btn btn-outline-secondary">Edit </a>
+
+                }
+                <a asp-route-id="@pro.CategoryId" asp-action="DetailsCategory" asp-controller="Product" class="btn btn-outline-info btn-close-white ">Details</a>
+
+            </td>
+        </tr>
+    }
+</table>
